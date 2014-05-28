@@ -7,6 +7,33 @@ angular.module('ui.bootstrap.position', [])
  * typeahead suggestions etc.).
  */
   .factory('$position', ['$document', '$window', function ($document, $window) {
+    function scrollTop() {
+        if (typeof $window.pageYOffset === 'number') {
+            return $window.pageYOffset;
+        }
+        if (typeof $document[0].body.scrollTop === 'number') {
+            return $document[0].body.scrollTop;
+        }
+        if (typeof $document[0].documentElement.scrollTop === 'number') {
+            return $document[0].documentElement.scrollTop;
+        }
+
+        return 0;
+    }
+
+    function scrollLeft() {
+        if (typeof $window.pageXOffset === 'number') {
+            return $window.pageXOffset;
+        }
+        if (typeof $document[0].body.scrollLeft === 'number') {
+            return $document[0].body.scrollLeft;
+        }
+        if (typeof $document[0].documentElement.scrollLeft === 'number') {
+            return $document[0].documentElement.scrollLeft;
+        }
+
+        return 0;
+    }
 
     function getStyle(el, cssprop) {
       if (el.currentStyle) { //IE
@@ -72,8 +99,8 @@ angular.module('ui.bootstrap.position', [])
         return {
           width: boundingClientRect.width || element.prop('offsetWidth'),
           height: boundingClientRect.height || element.prop('offsetHeight'),
-          top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-          left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+          top: boundingClientRect.top + scrollTop(),
+          left: boundingClientRect.left + scrollLeft()
         };
       },
 
