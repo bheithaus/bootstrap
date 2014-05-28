@@ -68,12 +68,27 @@ angular.module('ui.bootstrap.position', [])
        * http://api.jquery.com/offset/
        */
       offset: function (element) {
-        var boundingClientRect = element[0].getBoundingClientRect();
+        var boundingClientRect = element[0].getBoundingClientRect(),
+        var scrollTop = typeof $window.pageYOffset === 'number'
+              ? $window.pageYOffset
+              : typeof $document[0].body.scrollTop === 'number'
+              ? $document[0].body.scrollTop
+              : typeof $document[0].documentElement.scrollTop === 'number'
+              ? $document[0].documentElement.scrollTop
+              : 0;
+        var scrollLeft = typeof $window.pageXOffset === 'number'
+              ? $window.pageXOffset
+              : typeof $document[0].body.scrollLeft === 'number'
+              ? $document[0].body.scrollLeft
+              : typeof $document[0].documentElement.scrollLeft === 'number'
+              ? $document[0].documentElement.scrollLeft
+              : 0;
+
         return {
           width: boundingClientRect.width || element.prop('offsetWidth'),
           height: boundingClientRect.height || element.prop('offsetHeight'),
-          top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-          left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+          top: boundingClientRect.top + scrollTop,
+          left: boundingClientRect.left + scrollLeft
         };
       },
 
